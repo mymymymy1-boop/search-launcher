@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search Launcher - CityHeaven</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:#0e0e14;color:#e0e0ee;font-family:'Noto Sans JP','Hiragino Sans',system-ui,sans-serif}
+.hdr{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);padding:28px 24px 20px;border-bottom:1px solid rgba(233,30,99,.3)}
+.hdr h1{font-family:'Orbitron',monospace;font-size:20px;font-weight:700;letter-spacing:3px;background:linear-gradient(90deg,#f06292,#e91e63,#f48fb1);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hdr p{margin-top:6px;font-size:12px;color:#6a6a80}
+.cnt{padding:20px 20px 130px;max-width:820px;margin:0 auto}
+.sec{margin-top:22px}
+.sec-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sec-t{font-size:13px;font-weight:600;color:#b0b0c8}
+.sec-n{font-size:11px;background:rgba(233,30,99,.2);color:#f06292;padding:2px 8px;border-radius:10px;margin-left:8px}
+.sec-note{font-size:10px;color:#ff9800;margin-left:6px}
+.btn-clr{background:none;border:none;color:#555;font-size:11px;cursor:pointer}
+.btn-clr:hover{color:#999}
+.cg{display:flex;flex-wrap:wrap;gap:8px}
+.cg-sm{gap:6px}
+.cg-lbl{font-size:11px;color:#5a5a70;margin:12px 0 6px;display:flex;align-items:center;gap:6px}
+.cg-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.c{padding:6px 14px;border-radius:6px;border:1px solid #3a3a4a;background:rgba(255,255,255,.03);color:#9a9ab0;font-size:13px;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .15s}
+.c:hover{border-color:#5a5a6a;color:#c0c0d0}
+.c.a{border:none;color:#fff;font-weight:600}
+.c.sm{padding:4px 10px;font-size:11px}
+.cs{padding:4px 10px;border-radius:5px;border:1px solid #2a2a3a;background:rgba(255,255,255,.02);color:#7a7a90;font-size:11px;cursor:pointer;font-family:inherit;transition:all .15s}
+.cs:hover{border-color:#4a4a5a;color:#b0b0c0}
+.cs.a{border:none;color:#fff;font-weight:600;background:linear-gradient(135deg,#26c6da,#00838f)}
+.pk{background:linear-gradient(135deg,#f06292,#e91e63)}.cy{background:linear-gradient(135deg,#00bcd4,#0097a7)}.or{background:linear-gradient(135deg,#ff7043,#e64a19)}.pu{background:linear-gradient(135deg,#7c4dff,#536dfe)}.rd{background:linear-gradient(135deg,#ef5350,#c62828)}.bl{background:linear-gradient(135deg,#42a5f5,#1565c0)}.am{background:linear-gradient(135deg,#ffb300,#ff8f00);color:#1a1a2e!important}.tl{background:linear-gradient(135deg,#26c6da,#00838f)}.gn{background:linear-gradient(135deg,#66bb6a,#2e7d32)}.vi{background:linear-gradient(135deg,#ab47bc,#7b1fa2)}.rs{background:linear-gradient(135deg,#ec407a,#c2185b)}.ind{background:linear-gradient(135deg,#5c6bc0,#283593)}
+.pr{display:flex;align-items:center;gap:4px}
+.pr-del{background:none;border:none;color:#666;cursor:pointer;font-size:14px;padding:2px 4px}
+.pr-del:hover{color:#f06292}
+.btn-add{padding:6px 14px;border-radius:6px;border:1px dashed #3a3a4a;background:transparent;color:#6a6a80;font-size:13px;cursor:pointer;font-family:inherit}
+.btn-add:hover{border-color:#7c4dff;color:#a0a0c0}
+.pi-r{display:flex;gap:6px;align-items:center}
+.pi{padding:6px 10px;border-radius:6px;border:1px solid #3a3a4a;background:#1a1a2e;color:#e0e0ee;font-size:13px;width:140px;font-family:inherit;outline:none}
+.pi:focus{border-color:#7c4dff}
+.pi-ok{padding:6px 12px;border-radius:6px;border:none;background:#7c4dff;color:#fff;font-size:12px;cursor:pointer}
+.tabs{display:flex;gap:4px;background:rgba(255,255,255,.05);border-radius:8px;padding:3px}
+.tab{padding:8px 16px;border-radius:6px;border:none;background:transparent;color:#8a8aa0;font-size:13px;cursor:pointer;font-family:inherit;font-weight:500}
+.tab.a{background:linear-gradient(135deg,#f06292,#e91e63);color:#fff;font-weight:600}
+.rg{margin-bottom:12px}.rg-t{font-size:11px;color:#e91e63;margin-bottom:6px;font-weight:600}
+.url-box{margin-top:24px;background:rgba(255,255,255,.03);border:1px solid #2a2a3a;border-radius:10px;padding:16px}
+.url-lbl{font-size:11px;color:#6a6a80;margin-bottom:8px;letter-spacing:1px;text-transform:uppercase}
+.url-txt{font-size:12px;color:#80cbc4;word-break:break-all;line-height:1.6;font-family:Consolas,Monaco,monospace;background:rgba(0,0,0,.3);padding:12px;border-radius:6px;user-select:all}
+.bar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(0deg,#0e0e14 60%,transparent);padding:20px 20px 24px;display:flex;gap:12px;justify-content:center;z-index:100}
+.bar-in{display:flex;gap:12px;width:100%;max-width:820px}
+.btn-cp{flex:1;padding:14px;border-radius:10px;border:1px solid #3a3a4a;background:rgba(255,255,255,.05);color:#e0e0ee;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-cp:hover{background:rgba(255,255,255,.1)}
+.btn-cp.ok{background:rgba(102,187,106,.2)!important;border-color:#66bb6a!important;color:#66bb6a!important}
+.btn-go{flex:2;padding:14px;border-radius:10px;border:none;background:linear-gradient(135deg,#e91e63,#c2185b);color:#fff;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:1px;box-shadow:0 4px 20px rgba(233,30,99,.4);font-family:inherit;text-decoration:none;text-align:center;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.btn-go:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.sw{width:44px;height:24px;border-radius:12px;position:relative;cursor:pointer;border:none;padding:0;transition:background .2s}
+.sw::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s}
+.sw.on{background:#e91e63}.sw.off{background:#2a2a3a}
+.sw.on::after{left:22px}.sw.off::after{left:2px}
+.tg{display:flex;align-items:center;gap:12px}
+.tg-l{font-size:12px;color:#8a8aa0}
+</style>
+</head>
+<body>
+<div class="hdr"><h1>SEARCH LAUNCHER</h1><p>CityHeaven URL Generator — Local Edition</p></div>
+<div class="cnt">
+  <div class="sec"><div class="sec-h"><span class="sec-t">プリセット</span></div><div class="cg" id="z-pr"></div></div>
+  <div class="sec"><div class="sec-h"><span class="sec-t">検索タイプ</span></div><div class="tabs" id="z-lt"></div></div>
+  <div class="sec"><div class="sec-h"><span class="sec-t">都道府県</span></div><div id="z-pf"></div></div>
+  <div class="sec"><div class="sec-h"><span class="sec-t">サブエリア</span></div><div class="cg cg-sm" id="z-sa"></div></div>
+  <div class="sec"><div class="sec-h"><div><span class="sec-t">業種</span><span class="sec-n" id="z-biz-n"></span></div><button class="btn-clr" id="clr-biz">クリア</button></div><div class="cg" id="z-biz"></div></div>
+  <div class="sec" id="z-typ-sec"><div class="sec-h"><div><span class="sec-t">タイプ条件</span><span class="sec-n" id="z-typ-n"></span><span class="sec-note">（女の子検索のみ）</span></div><button class="btn-clr" id="clr-typ">クリア</button></div><div id="z-typ"></div></div>
+  <div class="sec"><div class="sec-h"><span class="sec-t">日付</span></div><div class="cg" id="z-dt"></div></div>
+  <div class="sec"><div class="sec-h"><div><span class="sec-t">時間指定</span><span class="sec-note" id="z-tm-note"></span></div></div><div class="cg cg-sm" id="z-tm"></div></div>
+  <div class="sec"><div class="sec-h"><span class="sec-t">並び順</span></div><div class="cg" id="z-so"></div></div>
+  <div class="sec"><div class="sec-h"><span class="sec-t">オプション</span></div><div class="tg" id="z-opt"></div></div>
+  <div class="url-box"><div class="url-lbl">Generated URL</div><div class="url-txt" id="z-url"></div></div>
+</div>
+<div class="bar"><div class="bar-in"><button class="btn-cp" id="btn-cp">URLコピー</button><a class="btn-go" id="btn-go" target="_blank" rel="noopener">ブラウザで検索 →</a></div></div>
+
+<script>
+// ═══ DATA ═══
+const REGIONS=[{name:"関東",items:[{c:"tokyo",l:"東京"},{c:"kanagawa",l:"神奈川"},{c:"saitama",l:"埼玉"},{c:"chiba",l:"千葉"},{c:"ibaraki",l:"茨城"},{c:"tochigi",l:"栃木"},{c:"gunma",l:"群馬"}]},{name:"北海道・東北",items:[{c:"hokkaido",l:"北海道"},{c:"aomori",l:"青森"},{c:"iwate",l:"岩手"},{c:"akita",l:"秋田"},{c:"miyagi",l:"宮城"},{c:"yamagata",l:"山形"},{c:"fukushima",l:"福島"}]},{name:"甲信越・北陸",items:[{c:"ishikawa",l:"石川"},{c:"toyama",l:"富山"},{c:"fukui",l:"福井"},{c:"niigata",l:"新潟"},{c:"nagano",l:"長野"},{c:"yamanashi",l:"山梨"}]},{name:"東海",items:[{c:"aichi",l:"愛知"},{c:"shizuoka",l:"静岡"},{c:"gifu",l:"岐阜"},{c:"mie",l:"三重"}]},{name:"関西",items:[{c:"osaka",l:"大阪"},{c:"hyogo",l:"兵庫"},{c:"kyoto",l:"京都"},{c:"shiga",l:"滋賀"},{c:"nara",l:"奈良"},{c:"wakayama",l:"和歌山"}]},{name:"中国",items:[{c:"okayama",l:"岡山"},{c:"hiroshima",l:"広島"},{c:"shimane",l:"島根"},{c:"tottori",l:"鳥取"},{c:"yamaguchi",l:"山口"}]},{name:"四国",items:[{c:"ehime",l:"愛媛"},{c:"kagawa",l:"香川"},{c:"kochi",l:"高知"},{c:"tokushima",l:"徳島"}]},{name:"九州・沖縄",items:[{c:"fukuoka",l:"福岡"},{c:"saga",l:"佐賀"},{c:"nagasaki",l:"長崎"},{c:"kumamoto",l:"熊本"},{c:"oita",l:"大分"},{c:"miyazaki",l:"宮崎"},{c:"kagoshima",l:"鹿児島"},{c:"okinawa",l:"沖縄"}]}];
+const SUBS={tokyo:[{c:"A1301",l:"新橋・銀座"},{c:"A1302",l:"東京・日本橋"},{c:"A1303",l:"渋谷・恵比寿"},{c:"A1304",l:"新宿・大久保"},{c:"A1305",l:"池袋"},{c:"A1307",l:"六本木・赤坂"},{c:"A1309",l:"飯田橋・市ヶ谷"},{c:"A1310",l:"秋葉原・神田"},{c:"A1311",l:"吉原"},{c:"A1312",l:"上野・鶯谷・浅草"},{c:"A1313",l:"錦糸町・小岩"},{c:"A1314",l:"築地・お台場"},{c:"A1315",l:"品川・田町"},{c:"A1316",l:"蒲田・大井"},{c:"A1317",l:"五反田・目黒"},{c:"A1318",l:"東急沿線"},{c:"A1319",l:"京王・小田急沿線"},{c:"A1321",l:"吉祥寺・府中"},{c:"A1322",l:"西武沿線"},{c:"A1323",l:"板橋・東武沿線"},{c:"A1324",l:"大塚・巣鴨・赤羽"},{c:"A1326",l:"国分寺・小金井"},{c:"A1329",l:"西東京市周辺"},{c:"A1330",l:"立川・八王子"},{c:"A1331",l:"福生・青梅"}]};
+const BIZ=[{c:"biz1",l:"ヘルス"},{c:"biz4",l:"ソープ"},{c:"biz5",l:"ホテヘル"},{c:"biz6",l:"デリヘル"},{c:"biz7",l:"エステ・アロマ"},{c:"biz21",l:"ピンサロ"},{c:"biz22",l:"セクキャバ"}];
+const TYP_G=[{name:"身長",g:"tl",items:[{c:"typ201",l:"〜149cm"},{c:"typ202",l:"150〜154"},{c:"typ203",l:"155〜159"},{c:"typ204",l:"160〜164"},{c:"typ205",l:"165〜169"},{c:"typ206",l:"170cm〜"}]},{name:"年齢",g:"vi",items:[{c:"typ101",l:"18〜19歳"},{c:"typ102",l:"20〜24歳"},{c:"typ103",l:"25〜29歳"},{c:"typ104",l:"30〜34歳"},{c:"typ105",l:"35〜39歳"},{c:"typ106",l:"40〜44歳"},{c:"typ107",l:"45〜49歳"},{c:"typ108",l:"50歳〜"}]},{name:"カップ",g:"rs",items:[{c:"typ301",l:"A"},{c:"typ302",l:"B"},{c:"typ303",l:"C"},{c:"typ304",l:"D"},{c:"typ305",l:"E"},{c:"typ306",l:"F"},{c:"typ307",l:"G"},{c:"typ308",l:"H"},{c:"typ309",l:"I〜"}]},{name:"評判",g:"am",items:[{c:"typ01",l:"ルックス抜群"},{c:"typ02",l:"スタイル抜群"},{c:"typ03",l:"サービス抜群"},{c:"typ04",l:"感度抜群"},{c:"typ05",l:"素人"}]},{name:"体型",g:"pk",items:[{c:"typ06",l:"巨乳"},{c:"typ07",l:"スレンダー"},{c:"typ08",l:"ぷよっ子"},{c:"typ09",l:"小柄"},{c:"typ10",l:"長身"},{c:"typ11",l:"美乳"},{c:"typ12",l:"美脚"},{c:"typ22",l:"グラマー"},{c:"typ23",l:"ぽっちゃり"},{c:"typ55",l:"美尻"}]},{name:"ジャンル",g:"ind",items:[{c:"typ24",l:"ギャル系"},{c:"typ25",l:"モデル系"},{c:"typ26",l:"現役学生"},{c:"typ27",l:"セクシー女優"},{c:"typ28",l:"ハーフ"},{c:"typ30",l:"黒髪"}]},{name:"性格",g:"gn",items:[{c:"typ14",l:"明るい"},{c:"typ15",l:"癒し系"},{c:"typ34",l:"甘えん坊"},{c:"typ35",l:"天然"},{c:"typ36",l:"ツンデレ"},{c:"typ37",l:"おっとり"},{c:"typ39",l:"人懐っこい"},{c:"typ40",l:"エロい"},{c:"typ48",l:"話し好き"},{c:"typ49",l:"聞き上手"}]},{name:"プレイ",g:"or",items:[{c:"typ13",l:"パイパン"},{c:"typ16",l:"責め好き"},{c:"typ17",l:"受身好き"},{c:"typ44",l:"潮吹き"},{c:"typ45",l:"ドM"},{c:"typ46",l:"ドS"},{c:"typ51",l:"パイズリ"},{c:"typ54",l:"喫煙しない"}]}];
+const TIMES=[{c:"",l:"指定なし"},{c:"0900",l:"9:00"},{c:"0930",l:"9:30"},{c:"1000",l:"10:00"},{c:"1030",l:"10:30"},{c:"1100",l:"11:00"},{c:"1130",l:"11:30"},{c:"1200",l:"12:00"},{c:"1230",l:"12:30"},{c:"1300",l:"13:00"},{c:"1330",l:"13:30"},{c:"1400",l:"14:00"},{c:"1430",l:"14:30"},{c:"1500",l:"15:00"},{c:"1530",l:"15:30"},{c:"1600",l:"16:00"},{c:"1630",l:"16:30"},{c:"1700",l:"17:00"},{c:"1730",l:"17:30"},{c:"1800",l:"18:00"},{c:"1830",l:"18:30"},{c:"1900",l:"19:00"},{c:"1930",l:"19:30"},{c:"2000",l:"20:00"},{c:"2030",l:"20:30"},{c:"2100",l:"21:00"},{c:"2130",l:"21:30"},{c:"2200",l:"22:00"},{c:"2230",l:"22:30"},{c:"2300",l:"23:00"},{c:"2330",l:"23:30"},{c:"0000",l:"0:00"},{c:"0030",l:"0:30"},{c:"0100",l:"1:00"},{c:"0130",l:"1:30"},{c:"0200",l:"2:00"},{c:"0230",l:"2:30"},{c:"0300",l:"3:00"}];
+const SORTS=[{c:"",l:"標準"},{c:"review_sort",l:"口コミ数順"},{c:"ranking_sort_daily",l:"デイリーランキング"},{c:"mt",l:"100名店"},{c:"rc3",l:"スタッフ求人"}];
+const DP=[{name:"デリヘル+エステ",lt:"girl-list",area:"tokyo",sub:"",biz:["biz6","biz7"],typ:["typ102","typ103","typ203","typ204","typ305","typ306","typ307"],time:"",reserve:true,sort:""},{name:"デリヘルお店",lt:"shop-list",area:"tokyo",sub:"",biz:["biz6"],typ:[],time:"",reserve:true,sort:""},{name:"ソープ吉原",lt:"shop-list",area:"tokyo",sub:"A1311",biz:["biz4"],typ:[],time:"",reserve:true,sort:""},{name:"ヘルス東京",lt:"girl-list",area:"tokyo",sub:"",biz:["biz1"],typ:[],time:"",reserve:true,sort:"review_sort"}];
+
+// ═══ STATE ═══
+let S={lt:"girl-list",area:"tokyo",sub:"",biz:["biz6","biz7"],typ:["typ102","typ103","typ203","typ204","typ305","typ306","typ307"],date:td(),time:"",reserve:true,sort:""};
+let presets=ldP(),showPI=false;
+
+function ldP(){try{let s=localStorage.getItem("ch_local_v1");if(s)return JSON.parse(s)}catch(e){}return DP.map(p=>({...p}))}
+function svP(){try{localStorage.setItem("ch_local_v1",JSON.stringify(presets))}catch(e){}}
+function td(){let d=new Date();return`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`}
+function dOpts(){let o=[],n=new Date(),dn=["日","月","火","水","木","金","土"];for(let i=0;i<14;i++){let d=new Date(n);d.setDate(d.getDate()+i);o.push({c:`${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`,l:`${d.getMonth()+1}/${d.getDate()}(${dn[d.getDay()]})`,w:d.getDay()})}return o}
+function sc(a){return[...a].sort((x,y)=>parseInt(x.replace(/\D/g,""))-parseInt(y.replace(/\D/g,"")))}
+function buildUrl(){
+  let u=`https://www.cityheaven.net/${S.area}/`;
+  if(S.sub)u+=`${S.sub}/`;u+=`${S.lt}/`;
+  if(S.biz.length)u+=sc(S.biz).join("-")+"/";
+  if(S.lt==="girl-list"&&S.typ.length)u+=sc(S.typ).join("-")+"/";
+  if(S.date)u+=`date${S.date}/`;
+  if(S.time){u+=`time${S.time}/`}
+  else{if(S.reserve&&S.sort)u+=`reserve-${S.sort}/`;else if(S.reserve)u+="reserve/";else if(S.sort)u+=`${S.sort}/`}
+  return u;
+}
+
+// ═══ RENDER ═══
+function chip(l,act,key,val,active,cls,sm){return`<button class="c${active?' a '+cls:''}${sm?' sm':''}" data-a="${act}" data-k="${key}" data-v="${val}">${l}</button>`}
+function R(){
+  let dts=dOpts(),isG=S.lt==="girl-list";
+  // Presets
+  let h="";presets.forEach((p,i)=>{h+=`<div class="pr"><button class="c a pu" data-a="lp" data-v="${i}">${p.name}</button><button class="pr-del" data-a="dp" data-v="${i}">✕</button></div>`});
+  h+=!showPI?`<button class="btn-add" data-a="tpi">＋ 保存</button>`:`<div class="pi-r"><input id="pi-inp" class="pi" placeholder="プリセット名"><button class="pi-ok" data-a="ap">OK</button><button class="pr-del" data-a="tpi">✕</button></div>`;
+  document.getElementById("z-pr").innerHTML=h;
+  if(showPI)setTimeout(()=>{let e=document.getElementById("pi-inp");if(e)e.focus()},0);
+  // List type
+  document.getElementById("z-lt").innerHTML=[["shop-list","お店で探す"],["girl-list","女の子で探す"]].map(([c,l])=>`<button class="tab${S.lt===c?' a':''}" data-a="set" data-k="lt" data-v="${c}">${l}</button>`).join("");
+  // Prefecture
+  let ph="";REGIONS.forEach(r=>{ph+=`<div class="rg"><div class="rg-t">${r.name}</div><div class="cg">`;r.items.forEach(a=>{ph+=chip(a.l,"set","area",a.c,S.area===a.c,"cy")});ph+=`</div></div>`});
+  document.getElementById("z-pf").innerHTML=ph;
+  // Sub areas
+  let subs=SUBS[S.area]||[],se=document.getElementById("z-sa");
+  se.innerHTML=subs.length?`<button class="cs${!S.sub?' a':''}" data-a="sub" data-v="">全域</button>`+subs.map(s=>`<button class="cs${S.sub===s.c?' a':''}" data-a="sub" data-v="${s.c}">${s.l}</button>`).join(""):`<span style="font-size:12px;color:#555">サブエリア未登録</span>`;
+  // Biz
+  document.getElementById("z-biz").innerHTML=BIZ.map(b=>chip(b.l,"tgl","biz",b.c,S.biz.includes(b.c),"or")).join("");
+  let bn=document.getElementById("z-biz-n");bn.textContent=S.biz.length||"";bn.style.display=S.biz.length?"inline":"none";
+  // Typ
+  let ts=document.getElementById("z-typ-sec");
+  if(isG){ts.style.display="";let th="";TYP_G.forEach(g=>{th+=`<div class="cg-lbl"><span class="cg-dot" style="background:var(--${g.g})"></span>${g.name}</div><div class="cg">`;g.items.forEach(t=>{th+=chip(t.l,"tgl","typ",t.c,S.typ.includes(t.c),g.g)});th+=`</div>`});
+  document.getElementById("z-typ").innerHTML=th;let tn=document.getElementById("z-typ-n");tn.textContent=S.typ.length||"";tn.style.display=S.typ.length?"inline":"none"}
+  else ts.style.display="none";
+  // Date
+  document.getElementById("z-dt").innerHTML=dts.map(d=>{let c=d.w===0?"rd":d.w===6?"bl":"pk";return chip(d.l,"set","date",d.c,S.date===d.c,c)}).join("");
+  // Time
+  document.getElementById("z-tm").innerHTML=TIMES.map(t=>chip(t.l,"set","time",t.c,S.time===t.c,t.c?"gn":"pk",true)).join("");
+  document.getElementById("z-tm-note").textContent=S.time?"（※時間指定時はreserveは自動OFF）":"";
+  // Sort
+  document.getElementById("z-so").innerHTML=SORTS.map(s=>chip(s.l,"set","sort",s.c,S.sort===s.c,"am")).join("");
+  // Options
+  let resOn=S.reserve&&!S.time;
+  document.getElementById("z-opt").innerHTML=`<button class="sw ${resOn?'on':'off'}" data-a="rsv" style="opacity:${S.time?.4:1};cursor:${S.time?'not-allowed':'pointer'}"></button><span class="tg-l">予約可能のみ（reserve）${S.time?" — 時間指定中は自動適用":""}</span>`;
+  // URL
+  let url=buildUrl();document.getElementById("z-url").textContent=url;document.getElementById("btn-go").href=url;
+}
+
+// ═══ EVENT DELEGATION ═══
+document.addEventListener("click",function(e){
+  let b=e.target.closest("[data-a]");if(!b)return;
+  let a=b.dataset.a,k=b.dataset.k||"",v=b.dataset.v||"";
+  switch(a){
+    case"set":S[k]=v;if(k==="area")S.sub="";break;
+    case"tgl":{let i=S[k].indexOf(v);if(i>=0)S[k].splice(i,1);else S[k].push(v);break}
+    case"sub":S.sub=S.sub===v?"":v;break;
+    case"rsv":if(!S.time)S.reserve=!S.reserve;break;
+    case"lp":{let p=presets[+v];if(p){S.lt=p.lt||"girl-list";S.area=p.area;S.sub=p.sub||"";S.biz=[...p.biz];S.typ=[...(p.typ||[])];S.time=p.time||"";S.reserve=p.reserve!==undefined?p.reserve:true;S.sort=p.sort||""}break}
+    case"dp":presets.splice(+v,1);svP();break;
+    case"tpi":showPI=!showPI;break;
+    case"ap":{let inp=document.getElementById("pi-inp"),nm=inp?inp.value.trim():"";if(!nm)return;presets.push({name:nm,lt:S.lt,area:S.area,sub:S.sub,biz:[...S.biz],typ:[...S.typ],time:S.time,reserve:S.reserve,sort:S.sort});svP();showPI=false;break}
+    default:return;
+  }
+  R();
+});
+document.addEventListener("keydown",function(e){if(e.target.id==="pi-inp"){if(e.key==="Enter"){let inp=e.target,nm=inp.value.trim();if(!nm)return;presets.push({name:nm,lt:S.lt,area:S.area,sub:S.sub,biz:[...S.biz],typ:[...S.typ],time:S.time,reserve:S.reserve,sort:S.sort});svP();showPI=false;R()}if(e.key==="Escape"){showPI=false;R()}}});
+document.getElementById("btn-cp").addEventListener("click",function(){
+  navigator.clipboard.writeText(buildUrl()).then(()=>{let b=document.getElementById("btn-cp");b.textContent="✓ コピー済み";b.classList.add("ok");setTimeout(()=>{b.textContent="URLコピー";b.classList.remove("ok")},2000)});
+});
+document.getElementById("clr-biz").addEventListener("click",function(){S.biz=[];R()});
+document.getElementById("clr-typ").addEventListener("click",function(){S.typ=[];R()});
+
+// CSS variables for gradient colors
+document.head.insertAdjacentHTML("beforeend",`<style>:root{--pk:linear-gradient(135deg,#f06292,#e91e63);--cy:linear-gradient(135deg,#00bcd4,#0097a7);--or:linear-gradient(135deg,#ff7043,#e64a19);--pu:linear-gradient(135deg,#7c4dff,#536dfe);--rd:linear-gradient(135deg,#ef5350,#c62828);--bl:linear-gradient(135deg,#42a5f5,#1565c0);--am:linear-gradient(135deg,#ffb300,#ff8f00);--tl:linear-gradient(135deg,#26c6da,#00838f);--gn:linear-gradient(135deg,#66bb6a,#2e7d32);--vi:linear-gradient(135deg,#ab47bc,#7b1fa2);--rs:linear-gradient(135deg,#ec407a,#c2185b);--ind:linear-gradient(135deg,#5c6bc0,#283593)}</style>`);
+
+R();
+</script>
+</body>
+</html>
